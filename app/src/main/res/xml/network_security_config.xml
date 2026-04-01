@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+
+    <!-- ✅ Android Emulator -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
+
+    <!-- ✅ Physical Device (Wi-Fi IP) -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">172.30.14.204</domain>
+    </domain-config>
+
+    <!-- ✅ Localhost (browser / tools) -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
+
+
+</network-security-config>
+
+
