@@ -80,12 +80,17 @@ fun formatDate(dateString: String?): String {
 @Composable
 fun StudentMyProfile(
     firebaseUid: String,
-    isEditing: Boolean,                     // 🔥 SAME AS DRIVER
-    onEditToggle: (Boolean) -> Unit,        // 🔥 SAME AS DRIVER
+    isEditing: Boolean,
+    onEditToggle: (Boolean) -> Unit,
     onLogout: () -> Unit,
     onBack: () -> Unit,
-    viewModel: StudentProfileViewModel = viewModel(key = "student_profile_vm")
 
+    // 👇 ADD THESE
+    onProfile: () -> Unit,
+    onHistory: () -> Unit,
+    onScheduledRides: () -> Unit,
+
+    viewModel: StudentProfileViewModel = viewModel(key = "student_profile_vm")
 ) {
     BackHandler { onBack()              // 👈 previous screen
     }
@@ -139,7 +144,12 @@ fun StudentMyProfile(
     AppScaffold(
         title = "My Profile",
         onLogout = onLogout,
-        onProfile = { /* already here */ },
+
+        // 👇 FIX HERE
+        onProfile = onProfile,
+        onHistory = onHistory,
+        onScheduledRides = onScheduledRides,
+
         actions = {
             Icon(
                 imageVector = if (isEditing) Icons.Default.Close else Icons.Default.Edit,

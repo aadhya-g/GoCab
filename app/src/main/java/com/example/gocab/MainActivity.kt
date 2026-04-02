@@ -279,13 +279,20 @@ fun MainScreen() {
                 firebaseUid = FirebaseAuth.getInstance().currentUser?.uid ?: "",
                 isEditing = isStudentEditing,
                 onEditToggle = { isStudentEditing = it },
+
                 onLogout = {
                     auth.signOut()
                     currentScreen.value = Screen.LOGIN
                 },
+
                 onBack = {
                     currentScreen.value = Screen.HOME
-                }
+                },
+
+                // 👇 ADD THESE (IMPORTANT)
+                onProfile = { currentScreen.value = Screen.STUDENT_PROFILE },
+                onHistory = { currentScreen.value = Screen.RIDE_HISTORY },
+                onScheduledRides = { currentScreen.value = Screen.SCHEDULED_RIDES }
             )
         }
 
@@ -293,7 +300,12 @@ fun MainScreen() {
         Screen.BOOK_RIDE -> BookRideScreen(
             onInitiateRide = { currentScreenState.value = Screen.SEARCH_RIDE },
             onJoinRide = { currentScreenState.value = Screen.SEARCH_RIDE_J },
-            onBackToHome = { currentScreenState.value = Screen.HOME }
+            onBackToHome = { currentScreenState.value = Screen.HOME },
+
+            onProfile = { currentScreenState.value = Screen.STUDENT_PROFILE },
+            onHistory = { currentScreenState.value = Screen.RIDE_HISTORY },
+            onScheduledRides = { currentScreenState.value = Screen.SCHEDULED_RIDES },
+            onLogout = { currentScreenState.value = Screen.LOGIN }
         )
 
         Screen.HOME -> HomeScreen(
@@ -462,12 +474,15 @@ fun MainScreen() {
         )
 
         Screen.SEARCH_RIDE -> SearchRideNavScreen(
-            onBackToHome = { currentScreenState.value = Screen.BOOK_RIDE }
-        )
+                onBackToHome = { currentScreenState.value = Screen.BOOK_RIDE },
+
+                )
 
         Screen.SEARCH_RIDE_J -> JoinRideSearchNav1(
-            onBackToHome = { currentScreenState.value = Screen.BOOK_RIDE }
-        )
+                    onBackToHome = { currentScreenState.value = Screen.BOOK_RIDE },
+            )
+
+
 
         Screen.DRIVER_PERSONAL_DETAILS -> DriverPersonalDetailsScreen {
             Prefs.setDetailsFilled(context, true)

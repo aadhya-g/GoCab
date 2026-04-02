@@ -2,6 +2,7 @@ package com.example.gocab
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -17,16 +18,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +59,9 @@ import java.util.Calendar
 // ================= NAVIGATION =================
 
 @Composable
-fun JoinRideSearchNav1(onBackToHome: () -> Unit) {
+fun JoinRideSearchNav1(
+    onBackToHome: () -> Unit
+){
 
     val navController = rememberNavController()
 
@@ -76,6 +83,7 @@ fun JoinRideSearchNav1(onBackToHome: () -> Unit) {
                 }
             )
         }
+
 
         composable("results/{pickup}/{drop}/{date}") { backStackEntry ->
 
@@ -121,8 +129,10 @@ fun JoinRideSearchNav1(onBackToHome: () -> Unit) {
 fun JoinRideSearchScreen1(
     navController: NavController,
     onBack: () -> Unit,
-    onApplyFiltersClick: () -> Unit
-) {
+    onApplyFiltersClick: () -> Unit,
+
+
+){
 
     BackHandler { onBack() }
 
@@ -133,12 +143,27 @@ fun JoinRideSearchScreen1(
     var drop by remember { mutableStateOf("") }
     var travelDate by remember { mutableStateOf("") }
 
-    AppScaffold(
-        title = "Join Ride",
-        onProfile = { /* profile */ },
-        onHistory = { /* history */ },
-        onScheduledRides = { /* scheduled rides */ },
-        onLogout = { /* logout */ }
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Join Ride", color = Color.White) },
+
+                // 🔥 BACK BUTTON ADD HERE
+                navigationIcon = {
+                    IconButton(onClick = { onBack() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF4169E1)
+                )
+            )
+        }
     ) { paddingValues ->
 
         Box(
@@ -148,7 +173,7 @@ fun JoinRideSearchScreen1(
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.img10),
+                painter = painterResource(id = R.drawable.img11),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -248,7 +273,8 @@ fun JoinRideSearchScreen1(
 
                             Button(
                                 onClick = {
-                                    navController.navigate("results/$pickup/$drop/$travelDate")
+                                    navController.navigate("results/$pickup/$drop/${Uri.encode(travelDate)}")
+                                  //  navController.navigate("results/$pickup/$drop/$travelDate")
                                 },
                                 modifier = Modifier
                                     .weight(1f)

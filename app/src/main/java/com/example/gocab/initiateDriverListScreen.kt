@@ -221,22 +221,22 @@ fun DriverListScreen(
 
                                         // ⭐ SHOW RATING
                                         Text(
-                                            text = "⭐ Rating: ${driver.rating ?: 0.0}",
-                                            fontSize = 16.sp
+                                            text = " Rating: ${driver.rating ?: 0.0}",
+                                            //fontSize = 16.sp
                                         )
 
                                         Spacer(modifier = Modifier.height(4.dp))
 
                                         Text(
-                                            text = "📍 Distance: ${driver.distanceKm} km",
-                                            fontSize = 19.sp
+                                            text = " Distance: ${driver.distanceKm} km",
+                                            //fontSize = 19.sp
                                         )
 
                                         Spacer(modifier = Modifier.height(4.dp))
 
                                         Text(
-                                            text = "💰 Fare: ₹${driver.fare}",
-                                            fontSize = 19.sp,
+                                            text = " Fare: ₹${driver.fare}",
+                                            //fontSize = 19.sp,
                                             color = Color(0xFF3F51B5)
                                         )
 
@@ -265,7 +265,7 @@ fun DriverListScreen(
                                         ) {
                                             Text(
                                                 text = "Request Ride",
-                                                fontSize = 19.sp,
+                                                fontSize = 17.sp,
                                                 color = Color.White
                                             )
                                         }

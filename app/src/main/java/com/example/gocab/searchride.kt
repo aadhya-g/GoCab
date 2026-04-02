@@ -13,13 +13,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +48,10 @@ import com.example.gocab.util.FilterData
 
 // ---------------- Search + Filters Navigation ----------------
 @Composable
-fun SearchRideNavScreen(onBackToHome: () -> Unit) {
+fun SearchRideNavScreen(
+    onBackToHome: () -> Unit,
+
+){
 
     val navController = rememberNavController()
 
@@ -54,12 +64,11 @@ fun SearchRideNavScreen(onBackToHome: () -> Unit) {
         composable("search") {
             SearchRideScreen(
                 onBackToHome = onBackToHome,
-                onApplyFiltersClick = {
-                    navController.navigate("filters")
-                },
+                onApplyFiltersClick = { navController.navigate("filters") },
                 onSearchClick = { pickup, drop ->
                     navController.navigate("drivers/$pickup/$drop")
-                }
+                },
+
             )
         }
 
@@ -162,7 +171,8 @@ fun SearchRideNavScreen(onBackToHome: () -> Unit) {
 fun SearchRideScreen(
     onBackToHome: () -> Unit,
     onApplyFiltersClick: () -> Unit,
-    onSearchClick: (String, String) -> Unit   // 👈 ADD THIS
+    onSearchClick: (String, String) -> Unit,
+
 )
 
 {
@@ -175,12 +185,27 @@ fun SearchRideScreen(
     var drop by remember { mutableStateOf("") }
 //    var driverName by remember { mutableStateOf("") }
 
-    AppScaffold(
-        title = "Search Ride",
-        onProfile = { },
-        onHistory = { /* open ride history */ },
-        onScheduledRides = { /* open scheduled rides */ },
-        onLogout = { /* logout logic */ }
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Search Ride", color = Color.White) },
+
+                // 🔥 BACK BUTTON ADD HERE
+                navigationIcon = {
+                    IconButton(onClick = { onBackToHome() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF4169E1)
+                )
+            )
+        }
     ) { paddingValues ->
 
         Box(
@@ -190,7 +215,7 @@ fun SearchRideScreen(
         ) {
             // 🌄 Background Image
             Image(
-                painter = painterResource(id = R.drawable.img10),
+                painter = painterResource(id = R.drawable.img11),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

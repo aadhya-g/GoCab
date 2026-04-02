@@ -205,12 +205,12 @@ fun SearchResultsScreen(
 
                                         Spacer(modifier = Modifier.height(8.dp))
 
-                                        Text("📅 Date: ${ride.R_date.substring(0, 10)}")
+                                        Text(" Date: ${ride.R_date.substring(0, 10)}")
 
                                         Spacer(modifier = Modifier.height(4.dp))
 
                                         Text(
-                                            "⏰ Time: ${
+                                            " Time: ${
                                                 ride.R_timing
                                                     .substringAfter("T")
                                                     .substringBefore(".")
@@ -219,22 +219,22 @@ fun SearchResultsScreen(
 
                                         Spacer(modifier = Modifier.height(4.dp))
 
-                                        Text("📍 Distance: ${ride.distance_km} km")
+                                        Text(" Distance: ${ride.distance_km} km")
 
                                         Spacer(modifier = Modifier.height(4.dp))
 
                                         Text(
-                                            text = "💰 Fare per seat: ₹${ride.fare_per_student}",
+                                            text = " Fare per seat: ₹${ride.fare_per_student}",
                                             color = Color(0xFF3F51B5),
-                                            fontSize = 19.sp
+
                                         )
 
                                         Spacer(modifier = Modifier.height(4.dp))
 
                                         Text(
-                                            text = "🪑 Seats Left: ${ride.seats_left}",
+                                            text = " Seats Left: ${ride.seats_left}",
                                             color = Color(0xFF2E7D32),
-                                            fontSize = 17.sp
+
                                         )
 
                                         Spacer(modifier = Modifier.height(14.dp))
@@ -254,7 +254,7 @@ fun SearchResultsScreen(
                                         ) {
                                             Text(
                                                 text = "Request Ride",
-                                                fontSize = 19.sp,
+                                                fontSize = 17.sp,
                                                 color = Color.White
                                             )
                                         }

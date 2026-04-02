@@ -502,7 +502,10 @@ fun RideDetailsScreen(
                                             "Ride Requested Successfully",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        navController.popBackStack()
+                                       // navController.popBackStack()
+                                        navController.navigate("home") {
+                                            popUpTo("search") { inclusive = true }
+                                        }
                                     }
                                 },
                                 modifier = Modifier

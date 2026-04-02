@@ -57,11 +57,16 @@ fun RideHistoryScreen(
     val rides = viewModel.rides
     var isLoading by remember { mutableStateOf(true) }
 
-
-    LaunchedEffect(Unit) {
+    LaunchedEffect(rides) {
         val email = FirebaseAuth.getInstance().currentUser?.email ?: ""
-        viewModel.fetchRideHistory(email)
-        isLoading = false
+
+        if (rides.isEmpty()) {
+            viewModel.fetchRideHistory(email)
+        }
+
+        if (rides.isNotEmpty()) {
+            isLoading = false   // ✅ tabhi band hoga jab data aayega
+        }
     }
 
     AppScaffold(
@@ -75,7 +80,7 @@ fun RideHistoryScreen(
 
             // 🌄 BACKGROUND
             Image(
-                painter = painterResource(id = R.drawable.img_6),
+                painter = painterResource(id = R.drawable.img11),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
@@ -86,12 +91,12 @@ fun RideHistoryScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.4f))
+                    .background(Color.Black.copy(alpha = 0.45f))
             )
 
             when {
 
-                // 🔄 LOADING
+                // 🔄 LOADING (jab tak data nahi aaya)
                 isLoading -> {
                     Box(
                         modifier = Modifier
@@ -110,17 +115,9 @@ fun RideHistoryScreen(
                     }
                 }
 
-                // ❌ EMPTY
+                // ❌ EMPTY (real empty case)
                 rides.isEmpty() -> {
-                    Column(
-                        modifier = Modifier
-                            .padding(padding)
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text("No Completed Rides ", color = Color.White)
-                    }
+                    Text("No Completed Rides", color = Color.White)
                 }
 
                 // ✅ DATA
@@ -157,7 +154,7 @@ fun RideHistoryItem(ride: RideHistory, viewModel: RideViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp),
+            .padding(horizontal = 12.dp, vertical = 20.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White.copy(alpha = 0.95f)
