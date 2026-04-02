@@ -559,7 +559,7 @@ fun fetchFullRideDetails(
     onResult: (JSONObject, List<JSONObject>) -> Unit
 ) {
 
-    val url = "http://172.30.14.204:5000/api/ride/full-details/$rideId"
+    val url = "http://10.206.39.204:5000/api/ride/full-details/$rideId"
 
     val request = JsonObjectRequest(
         Request.Method.GET,
@@ -596,7 +596,7 @@ fun requestRide(
     onSuccess: () -> Unit
 ) {
 
-    val url = "http://172.30.14.204:5000/api/ride/join"
+    val url = "http://10.206.39.204:5000/api/ride/join"
 
     val jsonBody = JSONObject().apply {
         put("rideId", rideId)

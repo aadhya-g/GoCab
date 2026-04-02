@@ -64,7 +64,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DriverHomeScreen(
     onRideRequests: () -> Unit = {},
-    onMonthlyEarnings: () -> Unit = {}
+    onConfirmedRides: () -> Unit = {}
 ) {
 
 
@@ -121,9 +121,9 @@ fun DriverHomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 💰 View Earnings Button
+            // 💰 View Confirmed Ride Button
             Button(
-                onClick = onMonthlyEarnings,
+                onClick = onConfirmedRides,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -137,7 +137,7 @@ fun DriverHomeScreen(
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("View Earnings", color = Color.White,fontSize = 18.sp)
+                Text("Confirmed Rides", color = Color.White,fontSize = 18.sp)
             }
 
             // ✅ Push quote to bottom
@@ -212,7 +212,7 @@ fun DriverAppContainer(
                     Screen.DRIVER_PROFILE -> "My Profile"
                     Screen.RIDE_REQUESTS -> "New Ride Requests"
                     Screen.CONFIRMED_RIDES -> "My Rides"
-                    Screen.MONTHLY_EARNINGS -> "My Earnings"
+                 //  Screen.MONTHLY_EARNINGS -> "My Earnings"
                     else -> "GoCab Driver"
                 }
                 CenterAlignedTopAppBar(
@@ -258,7 +258,7 @@ fun DriverAppContainer(
                 when (currentScreen) {
                     Screen.DRIVER_HOME -> DriverHomeScreen(
                         onRideRequests = { onScreenChange(Screen.RIDE_REQUESTS) },
-                        onMonthlyEarnings = { onScreenChange(Screen.MONTHLY_EARNINGS) }
+                        onConfirmedRides = { onScreenChange(Screen.CONFIRMED_RIDES) }
                     )
                     Screen.CONFIRMED_RIDES -> {
 
@@ -412,7 +412,7 @@ fun DrawerContent(
                 DrrawerItem("My Profile", Icons.Filled.Person) { onNavigate(Screen.DRIVER_PROFILE) }
                 DrrawerItem("Ride Requests", Icons.Filled.DirectionsCar) { onNavigate(Screen.RIDE_REQUESTS) }
                 DrrawerItem("Confirmed Rides", Icons.Filled.CheckCircle) { onNavigate(Screen.CONFIRMED_RIDES) }
-                DrrawerItem("Monthly Earnings", Icons.Filled.Money) { onNavigate(Screen.MONTHLY_EARNINGS) }
+               // DrrawerItem("Monthly Earnings", Icons.Filled.Money) { onNavigate(Screen.MONTHLY_EARNINGS) }
                 DrrawerItem("Logout", Icons.AutoMirrored.Filled.ExitToApp) { onLogout() }
             }
         }

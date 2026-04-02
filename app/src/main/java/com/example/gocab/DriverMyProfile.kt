@@ -99,7 +99,7 @@ fun DriverProfileScreen(
     val carSeaterState = remember { mutableStateOf("") }
     val carAcState = remember { mutableStateOf("") }
     val carCarrierState = remember { mutableStateOf("") }
-    val statusState = remember { mutableStateOf("Available") }
+    val statusState = remember { mutableStateOf("Active") }
 
     // Fetch Profile
     LaunchedEffect(Unit) { viewModel.fetchDriverProfile(firebase_uid) }
@@ -201,7 +201,7 @@ fun DriverProfileScreen(
                         if (isEditing) {
                             StatusDropdown(statusState)
                         } else {
-                            DetailRow("Availability", statusState.value)
+                            DetailRow("Status", statusState.value)
                         }
                     }
 
@@ -328,7 +328,7 @@ fun EditField(label: String, state: MutableState<String>, isEditing: Boolean, ke
 @Composable
 fun StatusDropdown(statusState: MutableState<String>) {
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf("Available", "Not Available")
+    val options = listOf("Active", "Inactive")
 
     Box(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
         OutlinedTextField(

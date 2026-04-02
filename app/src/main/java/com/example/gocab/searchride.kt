@@ -173,7 +173,7 @@ fun SearchRideScreen(
 
     var pickup by remember { mutableStateOf("") }
     var drop by remember { mutableStateOf("") }
-    var driverName by remember { mutableStateOf("") }
+//    var driverName by remember { mutableStateOf("") }
 
     AppScaffold(
         title = "Search Ride",
@@ -196,7 +196,6 @@ fun SearchRideScreen(
                 modifier = Modifier.fillMaxSize()
             )
 
-            // 🧾 Semi-transparent overlay for contrast
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -249,7 +248,7 @@ fun SearchRideScreen(
                                 .padding(vertical = 8.dp)
                         )
 
-                        OutlinedTextField(
+                        /*OutlinedTextField(
                             value = driverName,
                             onValueChange = { driverName = it },
                             label = { Text("Driver Name (optional)") },
@@ -258,7 +257,7 @@ fun SearchRideScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 8.dp)
-                        )
+                        )*/
 
                         Spacer(modifier = Modifier.height(20.dp))
 

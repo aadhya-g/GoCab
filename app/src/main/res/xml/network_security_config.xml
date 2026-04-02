@@ -8,7 +8,7 @@
 
     <!-- ✅ Physical Device (Wi-Fi IP) -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">172.30.14.204</domain>
+        <domain includeSubdomains="true">10.206.39.204</domain>
     </domain-config>
 
     <!-- ✅ Localhost (browser / tools) -->

@@ -18,6 +18,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -26,6 +28,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -52,6 +56,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 import java.util.UUID
 
 
@@ -63,6 +68,8 @@ fun DriverPersonalDetailsScreen(
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+
+    val calendar = Calendar.getInstance()
 
     // --- Personal Details States ---
     var fullName by remember { mutableStateOf("") }
@@ -76,7 +83,7 @@ fun DriverPersonalDetailsScreen(
     var phoneNo by remember { mutableStateOf("") }
     var licenseNumber by remember { mutableStateOf("") }
     var licenceError by remember { mutableStateOf<String?>(null) }
-    var driverStatus by remember { mutableStateOf("Available") } //  ADDED: Default value
+    var driverStatus by remember { mutableStateOf("Active") } //  ADDED: Default value
     var costPerKm by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
     var genderExpanded by remember { mutableStateOf(false) }
@@ -90,6 +97,9 @@ fun DriverPersonalDetailsScreen(
     var carAcExpanded by remember { mutableStateOf(false) } //  ADDED
     var carCarrier by remember { mutableStateOf("") } //  ADDED
     var carCarrierExpanded by remember { mutableStateOf(false) } //  ADDED
+
+
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.img13),
@@ -123,7 +133,7 @@ fun DriverPersonalDetailsScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.75f))
+                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f))
             ) {
                 Column(
                     modifier = Modifier
@@ -179,8 +189,34 @@ fun DriverPersonalDetailsScreen(
                         )
                     )
 
-                    DriverTextField(value =dob, label = "Date of Birth (YYYY-MM-DD)",keyboardType = KeyboardType.Phone) { dob = it }
+                    //DriverTextField(value =dob, label = "Date of Birth (YYYY-MM-DD)",keyboardType = KeyboardType.Phone) { dob = it }
 
+
+                    DriverTextField(
+                        value = dob,
+                        label = "Date of Birth",
+                        readOnly = true,   // 🔥 Important
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                android.app.DatePickerDialog(
+                                    context,
+                                    { _, y, m, d ->
+                                        dob = "%04d-%02d-%02d".format(y, m + 1, d)
+                                    },
+                                    calendar.get(Calendar.YEAR),
+                                    calendar.get(Calendar.MONTH),
+                                    calendar.get(Calendar.DAY_OF_MONTH)
+                                ).show()
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.DateRange,
+                                    contentDescription = "Pick Date"
+                                )
+                            }
+                        }
+                    ) {
+                        dob = it
+                    }
                     // Gender Dropdown
                     GenderDropdown(
                         gender = gender,
@@ -341,7 +377,7 @@ fun DriverPersonalDetailsScreen(
                                 D_phone_no = phoneNo,
                                 D_address = address,
                                 D_licence_no = licenseNumber,
-                                D_status = "Available",
+                                D_status = "Active",
                                 D_gender = gender,
                                 cost_per_km = costPerKm.toDoubleOrNull() ?: 10.0,
                                 current_city = currentCity.ifBlank { "Unknown" },
@@ -423,6 +459,8 @@ fun DriverTextField(
     value: String,
     label: String,
     keyboardType: KeyboardType = KeyboardType.Text,
+    readOnly: Boolean = false, // ✅ added
+    trailingIcon: @Composable (() -> Unit)? = null, // ✅ added
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -430,6 +468,8 @@ fun DriverTextField(
         onValueChange = onValueChange,
         label = { Text(label, color = Color.Black) },
         singleLine = true,
+        readOnly = readOnly, // ✅ added
+        trailingIcon = trailingIcon, // ✅ added
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = OutlinedTextFieldDefaults.colors(
@@ -440,8 +480,8 @@ fun DriverTextField(
             cursorColor = Color(0xFF000000),
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,
-            focusedContainerColor = Color.White.copy(alpha=0f), //  ADDED
-            unfocusedContainerColor = Color.White.copy(alpha=0f) //  ADDED
+            focusedContainerColor = Color.White.copy(alpha=0f),
+            unfocusedContainerColor = Color.White.copy(alpha=0f)
         )
     )
 }

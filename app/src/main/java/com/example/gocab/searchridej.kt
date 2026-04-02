@@ -287,7 +287,7 @@ fun JoinRideSearchScreen1(
         onResult: (List<RideSearchResult>) -> Unit
     ) {
 
-        val url = "http://172.30.14.204:5000/api/ride/search-existing"
+        val url = "http://10.206.39.204:5000/api/ride/search-existing"
 
         val jsonBody = JSONObject().apply {
             put("pickupCity", pickup)

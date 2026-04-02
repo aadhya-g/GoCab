@@ -15,6 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -23,6 +25,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -49,6 +53,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +64,7 @@ fun PersonalDetailsScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
+    val calendar = Calendar.getInstance()
     // State variables
     var fullName by remember { mutableStateOf("") }
     var nameError by remember { mutableStateOf<String?>(null) }
@@ -119,7 +125,7 @@ fun PersonalDetailsScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.75f))
+                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f))
             ) {
                 Column(
                     modifier = Modifier
@@ -180,8 +186,34 @@ fun PersonalDetailsScreen(
 
                     CustomTextField(value = smartCardId, label = "Smartcard ID") { smartCardId = it }
                     CustomTextField(value = collegeName, label = "College Name") { collegeName = it }
-                    CustomTextField(value = dob, label = "Date of Birth (YYYY-MM-DD)" ,keyboardType = KeyboardType.Phone) { dob = it }
+                   // CustomTextField(value = dob, label = "Date of Birth (YYYY-MM-DD)" ,keyboardType = KeyboardType.Phone) { dob = it }
 
+
+                    CustomTextField(
+                        value = dob,
+                        label = "Date of Birth",
+                        readOnly = true, // 🔥 important
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                android.app.DatePickerDialog(
+                                    context,
+                                    { _, y, m, d ->
+                                        dob = "%04d-%02d-%02d".format(y, m + 1, d)
+                                    },
+                                    calendar.get(Calendar.YEAR),
+                                    calendar.get(Calendar.MONTH),
+                                    calendar.get(Calendar.DAY_OF_MONTH)
+                                ).show()
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.DateRange,
+                                    contentDescription = "Pick Date"
+                                )
+                            }
+                        }
+                    ) {
+                        dob = it
+                    }
                     // Gender Dropdown
                     ExposedDropdownMenuBox(
                         expanded = genderExpanded,
@@ -372,6 +404,8 @@ fun CustomTextField(
     value: String,
     label: String,
     keyboardType: KeyboardType = KeyboardType.Text,
+    readOnly: Boolean = false, // ✅ added
+    trailingIcon: @Composable (() -> Unit)? = null, // ✅ added
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -379,6 +413,8 @@ fun CustomTextField(
         onValueChange = onValueChange,
         label = { Text(label, color = Color.Black) },
         singleLine = true,
+        readOnly = readOnly, // ✅ added
+        trailingIcon = trailingIcon, // ✅ added
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = OutlinedTextFieldDefaults.colors(

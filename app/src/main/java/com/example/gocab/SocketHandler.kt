@@ -10,7 +10,7 @@ object SocketHandler {
     private lateinit var socket: Socket
 
     fun setSocket() {
-        socket = IO.socket("http://172.30.14.204:5000")
+        socket = IO.socket("http://10.206.39.204:5000")
     }
 
     fun establishConnection() {
