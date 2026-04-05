@@ -236,6 +236,11 @@ fun SearchResultsScreen(
                                             color = Color(0xFF2E7D32),
 
                                         )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = " Rating: ${ride.rating ?: 0.0}⭐",
+                                            //fontSize = 16.sp
+                                        )
 
                                         Spacer(modifier = Modifier.height(14.dp))
 

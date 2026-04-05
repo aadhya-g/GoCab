@@ -221,7 +221,7 @@ fun DriverListScreen(
 
                                         // ⭐ SHOW RATING
                                         Text(
-                                            text = " Rating: ${driver.rating ?: 0.0}",
+                                            text = " Rating: ${driver.rating ?: 0.0}⭐",
                                             //fontSize = 16.sp
                                         )
 

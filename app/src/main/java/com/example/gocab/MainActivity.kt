@@ -65,6 +65,8 @@ import com.example.gocab.network.UserRequest
 import com.example.gocab.ui.screens.TrackRideScreen
 import com.example.gocab.ui.student.StudentMyProfile
 import com.example.gocab.ui.theme.GoCabTheme
+import com.example.gocab.util.SelectedRideHolder
+import com.example.gocab.util.SelectedRideHolder.driverEmail
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -96,23 +98,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-/*class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
-        setContent {
-            GoCabTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    MainScreen()
-                }
-            }
-        }
-    }
-}*/
+
 
 enum class Screen {
     SPLASH,
@@ -132,13 +118,9 @@ enum class Screen {
     RIDE_REQUESTS,
     CONFIRMED_RIDES,
     MONTHLY_EARNINGS,
-    DRIVER_DETAILS,
-    // add these new ones
+
     MAINTENANCE_HOME,
-    MAINTENANCE_STUDENTS,
-    MAINTENANCE_DRIVERS,
-    MAINTENANCE_COMPLAINTS,
-    MAINTENANCE_PROFILE,
+
     COLLEGE_HOME,
     SCHEDULED_RIDES,
     SCHEDULED_RIDE_DETAIL,
@@ -219,20 +201,7 @@ fun MainScreen() {
             }
         }
 
-        /*Screen.LOGIN -> LoginScreen(
-            onSignUpClicked = { currentScreenState.value = Screen.SIGNUP },
-            onLoginSuccess = {
-                val role = Prefs.getUserRole(context)
-                val detailsFilled = Prefs.isDetailsFilled(context)
-                currentScreenState.value = when {
-                    role == "Driver" && !detailsFilled -> Screen.DRIVER_PERSONAL_DETAILS
-                    role == "Driver" && detailsFilled -> Screen.DRIVER_HOME
-                    role == "Student" && !detailsFilled -> Screen.PERSONAL_DETAILS
-                    else -> Screen.HOME
-                }
-            }
-        )
-*/
+
         Screen.LOGIN -> LoginScreen(
             onSignUpClicked = { currentScreenState.value = Screen.SIGNUP },
             onLoginSuccess = { email ->   // 👈 email receive karo
@@ -253,7 +222,7 @@ fun MainScreen() {
             },
             onHelpClick = {
                 currentScreenState.value = Screen.HELP     // 👈 NAVIGATE TO HELP
-            }//MainActivity
+            }
         )
 
         Screen.SIGNUP -> SignupScreen(
@@ -331,16 +300,6 @@ fun MainScreen() {
             onProfile = { currentScreenState.value = Screen.STUDENT_PROFILE },
             onRideHistory = { currentScreenState.value = Screen.RIDE_HISTORY },
 
-            /*onOpenChat = { rideId: Int ->
-                selectedRideId = rideId
-                currentScreenState.value = Screen.CHAT_SCREEN
-            },*/
-
-            /*onTrackRide = { rideId ->
-                selectedRideId = rideId
-                currentScreenState.value = Screen.TRACK_RIDE
-            },*/
-
             onRideClick = { rideId: Int ->
                 selectedRideId = rideId
                 currentScreenState.value = Screen.SCHEDULED_RIDE_DETAIL
@@ -358,40 +317,7 @@ fun MainScreen() {
             )
         }
     }
-       /* Screen.TRACK_RIDE -> {
 
-            if (selectedRideId == 0) {
-                currentScreenState.value = Screen.SCHEDULED_RIDES
-            } else {
-                TrackRideScreen(
-                    rideId = selectedRideId,
-                    onBack = { currentScreenState.value = Screen.SCHEDULED_RIDES },
-                    onHome = { currentScreenState.value = Screen.SCHEDULED_RIDE_DETAIL }
-                )
-            }
-        }*/
-        /*Screen.TRACK_RIDE -> TrackRideScreen(
-            rideId = selectedRideId,
-            onBack = { currentScreenState.value = Screen.SCHEDULED_RIDES }
-        )*/
-        /*Screen.TRACK_RIDE -> TrackRideScreen(
-        rideId = selectedRideId ?: 0,
-        onBack = { currentScreenState.value = Screen.SCHEDULED_RIDES }
-            )*/
-        /*Screen.SCHEDULED_RIDE_DETAIL -> {
-            ScheduledRideDetailScreen(
-                rideId = selectedRideId,
-                onBack = { currentScreenState.value = Screen.SCHEDULED_RIDES },
-                onOpenChat = { rideId ->
-                    selectedRideId = rideId
-                    currentScreenState.value = Screen.CHAT_SCREEN },
-                onTrackRide = { rideId ->          // 🔥 ADD THIS
-                    selectedRideId = rideId
-                    currentScreenState.value = Screen.TRACK_RIDE
-                },
-                onHome = { currentScreenState.value = Screen.SCHEDULED_RIDES }
-            )
-        }*/
         Screen.SCHEDULED_RIDE_DETAIL -> {
 
             selectedRideId?.let { rideId ->   // ✅ FIX
@@ -437,31 +363,7 @@ fun MainScreen() {
                 )
             }
         }
-        /*Screen.CHAT_SCREEN -> {
-            val context = LocalContext.current
-            val role = Prefs.getUserRole(context)
-            selectedRideId?.let { rideId ->   // 🔥 MUST
 
-                Log.d("CHAT_FLOW", "Student Chat rideId = $rideId")
-
-                GroupChatScreen(
-                    rideId = rideId,
-                    onHome = { currentScreenState.value = Screen.SCHEDULED_RIDE_DETAIL },
-                    onBack = { currentScreenState.value = Screen.SCHEDULED_RIDE_DETAIL }
-                )
-            }
-        }*/
-
-        /*Screen.RIDE_HISTORY -> RideHistoryScreen(
-            onLogout = {
-                auth.signOut()
-                Toast.makeText(context, "Logged out!", Toast.LENGTH_SHORT).show()
-                currentScreenState.value = Screen.LOGIN
-            },
-            onProfile = {  currentScreenState.value = Screen.STUDENT_PROFILE },
-            onScheduledRides = { currentScreenState.value = Screen.SCHEDULED_RIDES },
-            onHome = { currentScreenState.value = Screen.HOME }
-        )*/
         Screen.RIDE_HISTORY -> RideHistoryScreen(
             onLogout = {
                 auth.signOut()
@@ -507,43 +409,15 @@ fun MainScreen() {
         )
 
 
-        /*Screen.DRIVER_RIDE_DETAIL -> {
-            DriverRideDetailScreen(
-                rideId = selectedRideId
-            )
-        }*/
-
         Screen.MAINTENANCE_HOME -> MaintenanceHomeScreens(
-            //onViewStudents = { currentScreenState.value = Screen.MAINTENANCE_STUDENTS },
-           // onViewDrivers = { currentScreenState.value = Screen.MAINTENANCE_DRIVERS },
-           //onViewComplaints = { currentScreenState.value = Screen.MAINTENANCE_COMPLAINTS },
-            //onProfile = { currentScreenState.value = Screen.MAINTENANCE_PROFILE },
+
             onLogout = {
                 FirebaseAuth.getInstance().signOut()
                 Toast.makeText(context, "Logged out successfully!", Toast.LENGTH_SHORT).show()
                 currentScreenState.value = Screen.LOGIN
             }
         )
-        /*Screen.MAINTENANCE_PROFILE -> {
-            MaintenanceMyProfileScreen(
-                firebaseUid = FirebaseAuth.getInstance().currentUser?.uid ?: "",
-                onBack = {
-                    currentScreenState.value = Screen.MAINTENANCE_HOME
-                }
-            )
-        }*/
 
-        /*Screen.COLLEGE_HOME -> AdminApp(
-            onViewStudents = {},
-            onViewDrivers = {},
-            onScheduledRides = {},
-            onRideAlerts = {},
-            onLogout = {
-                FirebaseAuth.getInstance().signOut()
-                Toast.makeText(context, "Logged out successfully!", Toast.LENGTH_SHORT).show()
-                currentScreenState.value = Screen.LOGIN
-            }
-        )*/
         Screen.COLLEGE_HOME -> AdminApp(
             adminEmail = loggedInAdminEmail   // jo login se mila hai
         )
@@ -625,25 +499,7 @@ fun SignupScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            /*OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.White,
-                    unfocusedBorderColor = Color.White.copy(alpha = 0.6f),
-                    disabledBorderColor = Color.Transparent,
-                    focusedLabelColor = Color.White,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
-                    cursorColor = Color.White,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
-                )
-            )*/
+
             OutlinedTextField(
                 value = password,
                 onValueChange = {
@@ -991,10 +847,13 @@ fun LoginScreen(
 
                                                         "Student" -> {
                                                             Toast.makeText(context, "Welcome Student!", Toast.LENGTH_SHORT).show()
-
+                                                            val studentEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+                                                            SelectedRideHolder.studentEmail = studentEmail
                                                             val userId = FirebaseAuth.getInstance().currentUser?.uid
                                                             val sharedPreferences = context.getSharedPreferences("GoCabPrefs", Context.MODE_PRIVATE)
                                                             val isFirstLogin = sharedPreferences.getBoolean("firstLogin_${userId}", false)
+                                                            val prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                                                            prefs.edit().putString("email", studentEmail).apply()
 
                                                             if (isFirstLogin) {
                                                                 // Navigate to personal details only once
@@ -1017,6 +876,8 @@ fun LoginScreen(
                                                             val userId = FirebaseAuth.getInstance().currentUser?.uid
                                                             val sharedPreferences = context.getSharedPreferences("GoCabPrefs", Context.MODE_PRIVATE)
                                                             val isFirstLogin = sharedPreferences.getBoolean("firstLogin_${userId}", false)
+                                                            val prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                                                            prefs.edit().putString("email", driverEmail).apply()
 
                                                             if (isFirstLogin) {
                                                                 // ✅ Show DriverPersonalScreen only once
@@ -1044,17 +905,7 @@ fun LoginScreen(
                                                             }
                                                         }
 
-                                                       /* "Administration" -> {
-                                                            Toast.makeText(
-                                                                context,
-                                                                "Welcome Administration!",
-                                                                Toast.LENGTH_SHORT
-                                                            ).show()
-                                                            Prefs.setDetailsFilled(context, true)
-                                                            (context as ComponentActivity).runOnUiThread {
-                                                                MainScreenNavigationHelper.navigateTo(Screen.COLLEGE_HOME)
-                                                            }
-                                                        }*/
+
                                                         "Administration" -> {
                                                             val adminEmail = user.email ?: ""
 

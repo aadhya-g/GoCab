@@ -8,7 +8,9 @@ data class DriverRideResponse(
     val R_timing: String,
     val distance_km: Double,
     val fare_amount: Double,
-    val R_status: String
+    val R_status: String,
+    val pickup_city: String,
+    val drop_city: String
 )
 /*
 package com.example.gocab.ui.DataModels

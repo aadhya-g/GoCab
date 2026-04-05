@@ -170,7 +170,10 @@ fun DriverProfileScreen(
                        // DetailRow("Date of Birth", driver.D_dob)
                         DetailRow("Gender", driver.D_gender ?: "N/A")
                         DetailRow("Aadhaar", driver.D_aadhar_no ?: "N/A")
-                      // DetailRow( label="Average Rating", value = driver.D_rating.toString())
+                        DetailRow(
+                            label = "Average Rating",
+                            value = driver.D_avg_rating?.let { "⭐ $it / 5" } ?: "Not Rated"
+                        )
                     }
 
                     // 2. Contact Details (Editable)

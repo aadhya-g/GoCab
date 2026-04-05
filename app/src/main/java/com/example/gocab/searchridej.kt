@@ -83,13 +83,11 @@ fun JoinRideSearchNav1(
                 }
             )
         }
-
-
         composable("results/{pickup}/{drop}/{date}") { backStackEntry ->
 
-            val pickup = backStackEntry.arguments?.getString("pickup") ?: ""
-            val drop = backStackEntry.arguments?.getString("drop") ?: ""
-            val date = backStackEntry.arguments?.getString("date") ?: ""
+            val pickup = Uri.decode(backStackEntry.arguments?.getString("pickup") ?: "")
+            val drop = Uri.decode(backStackEntry.arguments?.getString("drop") ?: "")
+            val date = Uri.decode(backStackEntry.arguments?.getString("date") ?: "")
 
             SearchResultsScreen(
                 pickup = pickup,
@@ -99,6 +97,21 @@ fun JoinRideSearchNav1(
                 navController = navController
             )
         }
+
+//        composable("results/{pickup}/{drop}/{date}") { backStackEntry ->
+//
+//            val pickup = backStackEntry.arguments?.getString("pickup") ?: ""
+//            val drop = backStackEntry.arguments?.getString("drop") ?: ""
+//            val date = backStackEntry.arguments?.getString("date") ?: ""
+//
+//            SearchResultsScreen(
+//                pickup = pickup,
+//                drop = drop,
+//                date = date,
+//                filters = selectedFilters,
+//                navController = navController
+//            )
+//        }
 
         composable("filters") {
             JoinRideFilterScreen(
@@ -271,10 +284,29 @@ fun JoinRideSearchScreen1(
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
 
+                            /*Button(
+                                onClick = {
+                                    navController.navigate("results/$pickup/$drop/$travelDate")
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(50.dp),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Text("Search")
+                            }*/
                             Button(
                                 onClick = {
-                                    navController.navigate("results/$pickup/$drop/${Uri.encode(travelDate)}")
-                                  //  navController.navigate("results/$pickup/$drop/$travelDate")
+                                    if (pickup.isBlank() || drop.isBlank() || travelDate.isBlank()) {
+                                        Log.d("NAV", "Empty fields")
+                                        return@Button
+                                    }
+
+                                    val encodedPickup = Uri.encode(pickup)
+                                    val encodedDrop = Uri.encode(drop)
+                                    val encodedDate = Uri.encode(travelDate)
+
+                                    navController.navigate("results/$encodedPickup/$encodedDrop/$encodedDate")
                                 },
                                 modifier = Modifier
                                     .weight(1f)
@@ -313,7 +345,7 @@ fun JoinRideSearchScreen1(
         onResult: (List<RideSearchResult>) -> Unit
     ) {
 
-        val url = "http://10.206.39.204:5000/api/ride/search-existing"
+        val url = "http://10.77.144.204:5000/api/ride/search-existing"
 
         val jsonBody = JSONObject().apply {
             put("pickupCity", pickup)
@@ -347,7 +379,8 @@ fun JoinRideSearchScreen1(
                             colleges = obj.optString("colleges"), // ✅ FIXED
                             year = obj.optString("years"),
                             branch = obj.optString("branches"),
-                            course = obj.optString("courses")
+                            course = obj.optString("courses"),
+                            rating=obj.optDouble("rating")
                         )
                     )
                 }

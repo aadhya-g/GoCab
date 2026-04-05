@@ -17,7 +17,8 @@ data class RideSearchResult(
     val colleges: String?,   // ✅ FIXED NAME
     val year: String?,
     val branch: String?,
-    val course: String?
+    val course: String?,
+    val rating:Double
 )
 
 

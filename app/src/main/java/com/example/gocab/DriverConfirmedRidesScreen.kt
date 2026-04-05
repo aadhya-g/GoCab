@@ -368,7 +368,7 @@ fun ConfirmedRidesScreen(
 
                                     //  Route Highlight
                                     Text(
-                                        text = " ${ride.initial_loc} ➜ ${ride.final_loc}",
+                                        text = " ${ride.pickup_city} ➜ ${ride.drop_city}",
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 18.sp,
                                         color = Color(0xFF3F51B5)
