@@ -84,8 +84,6 @@ fun StudentMyProfile(
     onEditToggle: (Boolean) -> Unit,
     onLogout: () -> Unit,
     onBack: () -> Unit,
-
-    // 👇 ADD THESE
     onProfile: () -> Unit,
     onHistory: () -> Unit,
     onScheduledRides: () -> Unit,
@@ -112,17 +110,15 @@ fun StudentMyProfile(
     }
     LaunchedEffect(viewModel.message) {
         if (viewModel.message == "success") {
-
-            // 1️⃣ Edit mode off
+            // Edit mode off
             onEditToggle(false)
-
-            // 2️⃣ Toast
+            // Toast
             Toast.makeText(
                 context,
                 "Profile Updated!",
                 Toast.LENGTH_SHORT
             ).show()
-            // 4️⃣ Reset message (VERY IMPORTANT)
+            // Reset message
             viewModel.message = null
         }
     }
@@ -139,13 +135,9 @@ fun StudentMyProfile(
             guardianEmailState.value = it.guardian_email ?: ""
         }
     }
-
-    // 🔥 APP SCAFFOLD YAHAN
     AppScaffold(
         title = "My Profile",
         onLogout = onLogout,
-
-        // 👇 FIX HERE
         onProfile = onProfile,
         onHistory = onHistory,
         onScheduledRides = onScheduledRides,
@@ -194,7 +186,6 @@ fun StudentMyProfile(
                         .padding(15.dp)
                 ) {
                     item {
-
                         ProfileHeader(
                             name = student.S_name ?: "Student",
                             email = student.S_email_id ?: ""
@@ -216,7 +207,7 @@ fun StudentMyProfile(
                                 formatDate(student.dateofbirth)
                             )
                             DetailRow("Gender", student.gender)
-                            DetailRow("Aadhar", student.aadhar_number ?: "N/A")
+                            DetailRow("Aadhaar", student.aadhar_number ?: "N/A")
                         }
                     }
                     item {
@@ -266,14 +257,9 @@ fun StudentMyProfile(
                                     .fillMaxWidth()
                                     .height(55.dp),
                                 shape = RoundedCornerShape(12.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(
-                                        0xFF3F51B5
-                                    )
-                                )
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5))
                             ) {
                                 Text("Save Changes", fontWeight = FontWeight.Bold)
-
                             }
 
                         } else {

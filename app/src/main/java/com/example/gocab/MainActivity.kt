@@ -443,28 +443,23 @@ fun SignupScreen(
     val auth = FirebaseAuth.getInstance()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Background image (keeps original brightness)
         Image(
             painter = painterResource(id = R.drawable.img_3),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
-        // Optional subtle overlay — remove or reduce alpha if image is too dull
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.18f)) // reduce alpha to keep image bright
         )
-
-        // Form positioned a bit lower to match your background design
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
                 .padding(horizontal = 24.dp)
-                .padding(top = 300.dp), // adjust this value to align fields precisely
+                .padding(top = 300.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -473,9 +468,7 @@ fun SignupScreen(
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
-
             Spacer(modifier = Modifier.height(20.dp))
-
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -483,7 +476,7 @@ fun SignupScreen(
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(                 // <- Material3 API
+                colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color.White,
                     unfocusedBorderColor = Color.White.copy(alpha = 0.6f),
                     disabledBorderColor = Color.Transparent,
@@ -495,11 +488,7 @@ fun SignupScreen(
                 )
             )
             Spacer(modifier = Modifier.height(8.dp))
-
-
             Spacer(modifier = Modifier.height(12.dp))
-
-
             OutlinedTextField(
                 value = password,
                 onValueChange = {
@@ -524,7 +513,6 @@ fun SignupScreen(
             )
             if (passwordError != null) {
                 Spacer(modifier = Modifier.height(6.dp))
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -538,9 +526,7 @@ fun SignupScreen(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(12.dp))
-
             OutlinedTextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
@@ -560,15 +546,12 @@ fun SignupScreen(
                     unfocusedTextColor = Color.White
                 )
             )
-
             Spacer(modifier = Modifier.height(24.dp))
-
             Button(
                 onClick = {
                     val e = email.trim()
                     val p = password.trim()
                     val c = confirmPassword.trim()
-
                     if (e.isBlank() || p.isBlank() || c.isBlank()) {
                         Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
                         return@Button
@@ -582,15 +565,11 @@ fun SignupScreen(
                         Toast.makeText(context, passwordValidation, Toast.LENGTH_SHORT).show()
                         return@Button
                     }
-
                     if (p != c) {
                         Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                         return@Button
                     }
-
-
                     val selectedRole = Prefs.getUserRole(context) ?: "Student"
-
                     val blockedDomains = listOf(
                         "gmail.com",
                         "yahoo.com",
@@ -695,7 +674,7 @@ fun validatePassword(password: String): String? {
 @Composable
 fun LoginScreen(
     onSignUpClicked: () -> Unit,
-    onLoginSuccess: (String) -> Unit,   //  email bhejega
+    onLoginSuccess: (String) -> Unit,
     onHelpClick: () -> Unit
 ){
     var email by remember { mutableStateOf("") }
@@ -716,9 +695,7 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
-
     Box(modifier = Modifier.fillMaxSize()) {
-
         // Background
         Image(
             painter = painterResource(id = R.drawable.img_3),
@@ -842,7 +819,7 @@ fun LoginScreen(
                                                         return@withContext
                                                     }
 
-                                                    // ✅ Navigate by role
+                                                    //  Navigate by role
                                                     when (actualRole) {
 
                                                         "Student" -> {

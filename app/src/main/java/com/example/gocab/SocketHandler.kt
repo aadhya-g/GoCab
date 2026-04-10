@@ -1,6 +1,7 @@
 package com.example.gocab
 
 import android.util.Log
+import com.example.gocab.network.RetrofitClient
 import io.socket.client.IO
 import io.socket.client.Socket
 import org.json.JSONObject
@@ -10,7 +11,7 @@ object SocketHandler {
     private lateinit var socket: Socket
 
     fun setSocket() {
-        socket = IO.socket("http://10.77.144.204:5000")
+        socket = IO.socket(RetrofitClient.BASE_URL)
     }
 
     fun establishConnection() {

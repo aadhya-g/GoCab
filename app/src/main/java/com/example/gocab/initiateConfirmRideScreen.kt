@@ -95,7 +95,8 @@ fun ConfirmRideScreen(navController: NavController) {
             if (response.isSuccessful) {
                 driverData = response.body()
                 Log.d("API_TEST", "Driver Data: $driverData")
-            } else {
+            }
+            else {
                 Log.e("API_TEST", "Error Body: ${response.errorBody()}")
             }
 
@@ -177,11 +178,8 @@ fun ConfirmRideScreen(navController: NavController) {
                                     color = Color.Red
                                 )
                             } else {
-
                                 val driver = driverData!!
-
                                 // ================= DRIVER CARD =================
-                                //Text("Driver Details", fontSize = 20.sp,color = Color(0xFF3F51B5))
                                 SectionTitle("Driver Details")
                                 Card(
                                     shape = RoundedCornerShape(12.dp),
@@ -190,7 +188,6 @@ fun ConfirmRideScreen(navController: NavController) {
                                     )
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                       /* InfoRow("Name", driver.D_name)*/
                                         Row(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -198,17 +195,11 @@ fun ConfirmRideScreen(navController: NavController) {
                                             horizontalArrangement = Arrangement.SpaceBetween,
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-
                                             Text("Name", color = Color.Gray)
-
                                             Row(verticalAlignment = Alignment.CenterVertically) {
-
                                                 Text(driver.D_name)
-
                                                 if (SelectedRideHolder.verifiedCount > 0) {
-
                                                     Spacer(modifier = Modifier.width(6.dp))
-
                                                     Icon(
                                                         imageVector = Icons.Default.Verified,
                                                         contentDescription = "Verified",
@@ -238,7 +229,6 @@ fun ConfirmRideScreen(navController: NavController) {
                                 }
                                 Spacer(modifier = Modifier.height(0.dp))
                                 // ================= CAR CARD =================
-                                // Text("Car Details", fontSize = 20.sp,color = Color(0xFF3F51B5))
                                 SectionTitle("Car Details")
                                 Card(
                                     shape = RoundedCornerShape(12.dp),
@@ -257,8 +247,7 @@ fun ConfirmRideScreen(navController: NavController) {
                         }
                         Spacer(modifier = Modifier.height(0.dp))
                         // ================= RIDE DETAILS =================
-                        /*Text("Ride Details", fontSize = 18.sp)
-                        Spacer(modifier = Modifier.height(8.dp))*/
+
                         SectionTitle("Ride Details")
 
                         OutlinedTextField(

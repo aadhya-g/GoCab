@@ -52,6 +52,7 @@ import androidx.navigation.compose.rememberNavController
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.gocab.network.RetrofitClient
 import com.example.gocab.util.JoinRideFilterData
 import org.json.JSONObject
 import java.util.Calendar
@@ -344,21 +345,17 @@ fun JoinRideSearchScreen1(
         date: String,
         onResult: (List<RideSearchResult>) -> Unit
     ) {
-
-        val url = "http://10.77.144.204:5000/api/ride/search-existing"
-
+        val url = RetrofitClient.BASE_URL + "api/ride/search-existing"
         val jsonBody = JSONObject().apply {
             put("pickupCity", pickup)
             put("dropCity", drop)
             put("date", date)
         }
-
         val request = JsonObjectRequest(
             Request.Method.POST,
             url,
             jsonBody,
             { response ->
-
                 val ridesArray = response.getJSONArray("rides")
                 val list = mutableListOf<RideSearchResult>()
 

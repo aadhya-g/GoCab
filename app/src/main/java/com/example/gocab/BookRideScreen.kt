@@ -1,5 +1,4 @@
 package com.example.gocab
-
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 @Composable
 fun BookRideScreen(
     onInitiateRide: () -> Unit,
@@ -36,9 +34,7 @@ fun BookRideScreen(
     onScheduledRides: () -> Unit,
     onLogout: () -> Unit
 ) {
-
     BackHandler { onBackToHome() }
-
     AppScaffold(
         title = "Book Ride",
         onProfile = onProfile,
@@ -46,13 +42,11 @@ fun BookRideScreen(
         onScheduledRides = onScheduledRides,
         onLogout = onLogout
     ) { padding ->
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-
             // Background Image
             Image(
                 painter = painterResource(id = R.drawable.img12),
@@ -60,15 +54,13 @@ fun BookRideScreen(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
-
             // Dark overlay
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.4f))
             )
-
-            // 🔥 MAIN CARD (BOX)
+            //  MAIN CARD (BOX)
             Card(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -94,7 +86,7 @@ fun BookRideScreen(
 
                     Spacer(modifier = Modifier.height(30.dp))
 
-                    // 🔵 INITIATE BUTTON (same old color)
+                    //  INITIATE BUTTON (same old color)
                     Button(
                         onClick = onInitiateRide,
                         colors = ButtonDefaults.buttonColors(
@@ -115,7 +107,7 @@ fun BookRideScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // ⚪ JOIN BUTTON (same old style)
+                    //  JOIN BUTTON
                     Button(
                         onClick = onJoinRide,
                         colors = ButtonDefaults.buttonColors(
@@ -138,91 +130,3 @@ fun BookRideScreen(
         }
     }
 }
-
-
-/*
-@Composable
-fun BookRideScreen(
-    onInitiateRide: () -> Unit,
-    onJoinRide: () -> Unit,
-    onBackToHome: () -> Unit,
-    onProfile: () -> Unit,
-    onHistory: () -> Unit,
-    onScheduledRides: () -> Unit,
-    onLogout: () -> Unit
-) {
-    // Handle physical back button
-    BackHandler {
-        onBackToHome()
-    }
-
-    AppScaffold(
-        title = "Book Ride",
-        onProfile = onProfile,
-        onHistory = onHistory,
-        onScheduledRides = onScheduledRides,
-        onLogout = onLogout
-    ){ padding ->   // ✅ This works if AppScaffold matches above
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            // Background Image
-            Image(
-                painter = painterResource(id = R.drawable.img_7),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.4f))
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-
-                Text(
-                    text = "Choose Your Ride",
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(30.dp))
-
-                Button(
-                    onClick = onInitiateRide,
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFF1E3A5F))
-                ) {
-                    Text("INITIATE RIDE", fontSize = 16.sp)
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = onJoinRide,
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp),
-                    colors = ButtonDefaults.buttonColors(Color(0xFF4CAF50))
-                ) {
-                    Text("JOIN RIDE", fontSize = 16.sp)
-                }
-            }
-        }
-    }
-}
-*/

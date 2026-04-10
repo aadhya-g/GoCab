@@ -54,6 +54,7 @@ import androidx.navigation.NavController
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.gocab.network.RetrofitClient
 import com.google.firebase.auth.FirebaseAuth
 import org.json.JSONObject
 
@@ -63,7 +64,6 @@ fun RideDetailsScreen(
     rideId: Int,
     navController: NavController
 ) {
-
     val context = LocalContext.current
     val studentEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
     var rideData by remember { mutableStateOf<JSONObject?>(null) }
@@ -73,7 +73,6 @@ fun RideDetailsScreen(
     var pickupCity by remember { mutableStateOf("") }
     var dropCity by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(true) }
-
     LaunchedEffect(Unit) {
         fetchFullRideDetails(context, rideId) { ride, students ->
             rideData = ride
@@ -100,28 +99,24 @@ fun RideDetailsScreen(
             )
         }
     ) { paddingValues ->
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ){
-
-            // 🌄 Background Image
+            //Background Image
             Image(
                 painter = painterResource(id = R.drawable.img_6),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(), alpha = .85f,
                 contentScale = ContentScale.Crop
             )
-
-            // 🌫 Dark Overlay
+            // Dark Overlay
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.30f))
             )
-
             if (isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -131,7 +126,6 @@ fun RideDetailsScreen(
                 }
                 return@Box
             }
-
             if (rideData == null) {
                 Text(
                     "Failed to load ride details",
@@ -147,9 +141,6 @@ fun RideDetailsScreen(
                         .padding(12.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-
-                    //Spacer(modifier = Modifier.height(10.dp))
-
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
@@ -157,68 +148,39 @@ fun RideDetailsScreen(
                             containerColor = Color.White.copy(alpha = 0.92f)
                         )
                     ) {
-
                         Column(
                             modifier = Modifier.padding(18.dp),
                             verticalArrangement = Arrangement.spacedBy(18.dp)
                         ) {
-
-                            // 🔹 DRIVER SECTION
-
+                            // DRIVER SECTION
                             Text(
                                 "Driver Information",
                                 fontSize = 19.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF3F51B5),
-
                                 )
-                            /*Card(
-                                shape = RoundedCornerShape(18.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFE3F2FD)   // Light Blue
-                                )
-                            ) {
-                                Column(
-
-                                    modifier = Modifier.padding(18.dp),
-                                    //verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    DetailRoww("Name -  ${rideData!!.getString("D_name")}")
-                                    DetailRoww("Phone - ${rideData!!.getString("D_phone_no")}")
-                                    DetailRoww("Gender - ${rideData!!.getString("D_gender")}")
-                                    DetailRoww("Rating - ${rideData!!.optString("D_avg_rating", "N/A")}")
-                                    DetailRoww("City - ${rideData!!.getString("current_city")}")
-                                }
-                            }*/
-
                             Card(
                                 shape = RoundedCornerShape(18.dp),
                                 colors = CardDefaults.cardColors(
                                     containerColor = Color(0xFFE3F2FD)
                                 )
                             ) {
-
                                 val verifiedCount = rideData!!.optInt("verifiedCount", 0)
-
                                 Column(
                                     modifier = Modifier.padding(18.dp),
                                 //    verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-
-                                    // 🔥 Name + Verified Badge
+                                    // Name + Verified Badge
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
-
                                         Text(
                                             text = "Name - ${rideData!!.getString("D_name")}",
                                             fontWeight = FontWeight.SemiBold,
                                             fontSize = 16.sp
                                         )
-
                                         if (verifiedCount > 0) {
                                             Spacer(modifier = Modifier.width(6.dp))
-
                                             Icon(
                                                 imageVector = Icons.Default.Verified,
                                                 contentDescription = "Verified",
@@ -227,8 +189,7 @@ fun RideDetailsScreen(
                                             )
                                         }
                                     }
-
-                                    // 🔥 Verified Text
+                                    // Verified Text
                                     if (verifiedCount > 0) {
                                         Text(
                                             text = "Verified by $verifiedCount colleges",
@@ -236,7 +197,6 @@ fun RideDetailsScreen(
                                             fontSize = 12.sp
                                         )
                                     }
-
                                     DetailRoww("Phone - ${rideData!!.getString("D_phone_no")}")
                                     DetailRoww("Gender - ${rideData!!.getString("D_gender")}")
                                     DetailRoww(
@@ -250,9 +210,7 @@ fun RideDetailsScreen(
                                     DetailRoww("City - ${rideData!!.getString("current_city")}")
                                 }
                             }
-
-
-                            // 🔹 CAR SECTION
+                            //  CAR SECTION
                             Text(
                                 "Car Details",
                                 fontSize = 19.sp,
@@ -267,9 +225,7 @@ fun RideDetailsScreen(
                             ) {
                                 Column(
                                     modifier = Modifier.padding(18.dp),
-                                    //verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-
                                     DetailRoww("Car Name - ${rideData!!.getString("C_name")}")
                                     DetailRoww("Number - ${rideData!!.getString("C_number")}")
                                     DetailRoww("Model - ${rideData!!.getString("C_model")}")
@@ -277,24 +233,7 @@ fun RideDetailsScreen(
                                     DetailRoww("Seater - ${rideData!!.getString("C_seater")}")
                                 }
                             }
-
-                            /*Text(
-                                "Car Information",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF3F51B5)
-                            )
-
-                            Text("Car Name: ${rideData!!.getString("C_name")}")
-                            Text("Number: ${rideData!!.getString("C_number")}")
-                            Text("Model: ${rideData!!.getString("C_model")}")
-                            Text("AC/NAC: ${rideData!!.getString("C_ac_nac")}")
-                            Text("Seater: ${rideData!!.getString("C_seater")}")
-
-                            Divider()*/
-
-                            // 🔹 STUDENTS SECTION
-
+                            // STUDENTS SECTION
                             Text(
                                 "Students Joined",
                                 fontSize = 19.sp,
@@ -308,19 +247,15 @@ fun RideDetailsScreen(
                                     containerColor = Color(0xFFF3E5F5)
                                 )
                             ) {
-
                                 Column(
                                     modifier = Modifier.padding(18.dp),
                                     verticalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
-
                                     studentsList.forEach { student ->
-
                                         Row(
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-
-                                            // 👤 Avatar Circle
+                                            //  Avatar Circle
                                             Box(
                                                 modifier = Modifier
                                                     .size(36.dp)
@@ -336,23 +271,18 @@ fun RideDetailsScreen(
                                                     fontWeight = FontWeight.Bold
                                                 )
                                             }
-
                                             Spacer(modifier = Modifier.width(12.dp))
-
                                             Column {
-
                                                 Text(
                                                     text = student.getString("S_name"),
                                                     fontWeight = FontWeight.SemiBold,
                                                     fontSize = 16.sp
                                                 )
-
                                                 Text(
                                                     text = student.optString("College_name",""),
                                                     fontSize = 13.sp,
                                                     color = Color.Gray
                                                 )
-
                                                 Text(
                                                     text = "${student.optString("course","")} • ${student.optString("branch","")} • ${student.optString("year","")} Year",
                                                     fontSize = 12.sp,
@@ -363,93 +293,13 @@ fun RideDetailsScreen(
                                     }
                                 }
                             }
-                            /*Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(18.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFF3E5F5)
-                                )
-                            ) {
-                                studentsList.forEach { student ->
-
-
-
-                                        // 👤 Student Icon Circle
-                                        Box(
-                                            modifier = Modifier
-                                                .size(36.dp)
-                                                .background(
-                                                    Color(0xFF4169E1),
-                                                    shape = RoundedCornerShape(50)
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = student.getString("S_name").first()
-                                                    .toString(),
-                                                color = Color.White,
-                                                fontWeight = FontWeight.Bold
-                                            )
-                                        }
-
-                                        Spacer(modifier = Modifier.width(12.dp))
-
-                                        Column {
-
-                                            Text(
-                                                text = student.getString("S_name"),
-                                                fontWeight = FontWeight.SemiBold,
-                                                fontSize = 16.sp,
-                                                color = Color.Black
-                                            )
-
-                                            Text(
-                                                text = student.optString("College_name", ""),
-                                                fontSize = 13.sp,
-                                                color = Color.Gray
-                                            )
-
-                                            Text(
-                                                text = "${
-                                                    student.optString(
-                                                        "course",
-                                                        ""
-                                                    )
-                                                } • ${
-                                                    student.optString(
-                                                        "branch",
-                                                        ""
-                                                    )
-                                                } • ${student.optString("year", "")}",
-                                                fontSize = 12.sp,
-                                                color = Color.DarkGray
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                }
-                            }*/
-
-                            /*Text(
-                                "Students Joined",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF3F51B5)
-                            )
-
-                            studentsList.forEach { student ->
-                                Text("• ${student.getString("S_name")}")
-                            }
-
-                            Divider()*/
-
-                            // 🔹 FORM SECTION
+                            // FORM SECTION
                             Text(
                                 "Request Details",
                                 fontSize = 19.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF3F51B5)
                             )
-
                             OutlinedTextField(
                                 value = detailedPickup,
                                 onValueChange = { detailedPickup = it },
@@ -457,7 +307,6 @@ fun RideDetailsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp)
                             )
-
                             OutlinedTextField(
                                 value = detailedDrop,
                                 onValueChange = { detailedDrop = it },
@@ -465,7 +314,6 @@ fun RideDetailsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp)
                             )
-
                             OutlinedTextField(
                                 value = pickupCity,
                                 onValueChange = { pickupCity = it },
@@ -473,7 +321,6 @@ fun RideDetailsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp)
                             )
-
                             OutlinedTextField(
                                 value = dropCity,
                                 onValueChange = { dropCity = it },
@@ -481,9 +328,7 @@ fun RideDetailsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp)
                             )
-
                             Spacer(modifier = Modifier.height(10.dp))
-
                             Button(
                                 onClick = {  val studentEmail =
                                     FirebaseAuth.getInstance().currentUser?.email ?: ""
@@ -523,16 +368,12 @@ fun RideDetailsScreen(
                             }
                         }
                     }
-
                     Spacer(modifier = Modifier.height(40.dp))
                 }
             }
-
         }
     }
 }
-
-
 @Composable
 fun DetailRoww(label: String) {
     Row(
@@ -552,37 +393,30 @@ fun DetailRoww(label: String) {
         )
     }
 }
-
-
 fun fetchFullRideDetails(
     context: Context,
     rideId: Int,
     onResult: (JSONObject, List<JSONObject>) -> Unit
 ) {
-
-    val url = "http://10.77.144.204:5000/api/ride/full-details/$rideId"
-
+    val url = RetrofitClient.BASE_URL + "api/ride/full-details/$rideId"
+    //val url = "http://172.23.211.204:5000/api/ride/full-details/$rideId"
     val request = JsonObjectRequest(
         Request.Method.GET,
         url,
         null,
         { response ->
-
             val ride = response.getJSONObject("ride")
             val studentsArray = response.getJSONArray("students")
-
             val list = mutableListOf<JSONObject>()
             for (i in 0 until studentsArray.length()) {
                 list.add(studentsArray.getJSONObject(i))
             }
-
             onResult(ride, list)
         },
         { error ->
             Log.e("DETAILS_ERROR", error.toString())
         }
     )
-
     Volley.newRequestQueue(context).add(request)
 }
 fun requestRide(
@@ -596,9 +430,7 @@ fun requestRide(
     date: String,
     onSuccess: () -> Unit
 ) {
-
-    val url = "http://10.77.144.204:5000/api/ride/join"
-
+    val url = RetrofitClient.BASE_URL + "api/ride/join"
     val jsonBody = JSONObject().apply {
         put("rideId", rideId)
         put("studentEmail", studentEmail)
@@ -608,7 +440,6 @@ fun requestRide(
         put("dropCity", dropCity)
         put("date", date)
     }
-
     val request = JsonObjectRequest(
         Request.Method.POST,
         url,
@@ -620,6 +451,5 @@ fun requestRide(
             Log.e("JOIN_ERROR", error.toString())
         }
     )
-
     Volley.newRequestQueue(context).add(request)
 }

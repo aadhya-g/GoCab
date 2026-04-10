@@ -7,8 +7,12 @@
     </domain-config>
 
     <!-- ✅ Physical Device (Wi-Fi IP) -->
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">10.77.144.204</domain>
+<!--    <domain-config cleartextTrafficPermitted="true">-->
+<!--        <domain includeSubdomains="true">172.23.211.204</domain>-->
+<!--    </domain-config>-->
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">ngrok-free.dev</domain>
     </domain-config>
 
     <!-- ✅ Localhost (browser / tools) -->

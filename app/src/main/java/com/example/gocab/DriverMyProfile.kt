@@ -182,7 +182,6 @@ fun DriverProfileScreen(
                         EditField("Current City", currentCityState, isEditing)
                         EditField("Full Address", addressState, isEditing)
                     }
-
                     // 3. Vehicle Details (Editable)
                     EditableCard(title = "Vehicle Information", icon = Icons.Default.DirectionsCar, isEditing = isEditing) {
                         EditField("Car Name", carNameState, isEditing)
@@ -193,13 +192,10 @@ fun DriverProfileScreen(
                         EditField("AC/Non-AC", carAcState, isEditing)
                         EditField("Carrier (Yes/No)", carCarrierState, isEditing)
                     }
-
-
                     // 4. Status & Pricing
                     EditableCard(title = "Status & Pricing", icon = Icons.Default.AttachMoney, isEditing = isEditing) {
                         EditField("Cost per Km", costState, isEditing, KeyboardType.Decimal)
                         DetailRow("License", driver.D_licence_no ?: "N/A")
-
                         // Status Toggle in Edit Mode
                         if (isEditing) {
                             StatusDropdown(statusState)
@@ -207,9 +203,7 @@ fun DriverProfileScreen(
                             DetailRow("Status", statusState.value)
                         }
                     }
-
                     Spacer(modifier = Modifier.height(30.dp))
-
                     if (isEditing) {
                         Button(
                             onClick = {
