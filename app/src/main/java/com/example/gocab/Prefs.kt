@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 object Prefs {
     private const val PREFS_NAME = "GoCabPrefs"
     private const val KEY_DETAILS_FILLED = "details_filled"
-    private const val KEY_USER_ROLE = "user_role"   // 👈 new key
+    private const val KEY_USER_ROLE = "user_role"   //  new key
     private const val PREF_NAME = "GoCabPrefs"
 
     fun setBoolean(context: Context, key: String, value: Boolean) {
